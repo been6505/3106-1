@@ -1,10 +1,24 @@
 from http import server
 import socket
 
+host = "localhost"
+port = 9999
+
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server.bind(("localhost",9999))
+server.bind((host,port))
 
-message,address = server.recvfrom(1024)
-print(message.decode('utf-8'))
-server.sendto("Start connection".encode('utf-8'),address)
+while True:
+    data ,address = server.recvfrom(1024)
+    data = data.decode('utf-8')
+    
+    if data == "exit" : 
+         print("Client disconnected")
+         break
+    
+    print(f"Client : {data}") 
+    
+    data = data.upper()
+    data = data.encode('utf-8')
+    server.sendto(data,address)
 
+server.close()
