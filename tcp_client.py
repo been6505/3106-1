@@ -1,12 +1,14 @@
 from pydoc import cli
 import socket
 
+host = "localhost"
+port = 9999
+
 client=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(("localhost",9999))
+client.connect((host,port))
 
-client.send("Start server".encode('utf-8'))
-print(client.recv(1024).decode('utf-8'))
-
-client.send("Stop server".encode('utf-8'))
-print(client.recv(1024).decode('utf-8'))
-
+data = input("Enter : ")
+client.send(bytes(data.encode('utf-8')))
+buffer = client.recv(1024)
+buffer = buffer.decode('utf-8')
+print(f"Server : {buffer}")
